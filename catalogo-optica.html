@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Óptica · Catálogo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F4F0E6;
+    --paper-soft:#FBF9F3;
+    --ink:#17181C;
+    --ink-soft:#5B5A54;
+    --line:#DCD4BE;
+    --amber:#B8793A;
+    --amber-deep:#8F5C29;
+    --teal:#3A6B6E;
+    --teal-deep:#2A4E50;
+    --white:#FFFFFF;
+    --danger:#B4483F;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;}
+  h1,h2,h3,.display{font-family:'Fraunces',serif;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  a{color:inherit;}
+  button{font-family:inherit;cursor:pointer;}
+  img{max-width:100%;display:block;}
+
+  /* ---------- Top bar ---------- */
+  .topbar{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:22px 5vw 18px;border-bottom:1px solid var(--line);
+    position:sticky;top:0;background:rgba(244,240,230,0.92);backdrop-filter:blur(6px);z-index:50;
+  }
+  .brand{display:flex;align-items:center;gap:12px;}
+  .brand-mark{width:34px;height:34px;flex-shrink:0;}
+  .brand-name{font-size:20px;font-weight:600;letter-spacing:0.2px;}
+  .brand-tag{font-size:11px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:1.5px;margin-top:2px;}
+  .nav-links{display:flex;gap:24px;align-items:center;font-size:14px;}
+  .nav-links button.linklike{background:none;border:none;color:var(--ink-soft);font-size:13px;padding:6px 4px;border-bottom:1px solid transparent;}
+  .nav-links button.linklike:hover{color:var(--ink);border-color:var(--ink-soft);}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    display:grid;grid-template-columns:1.1fr 0.9fr;gap:48px;
+    padding:64px 5vw 56px;align-items:center;
+  }
+  .hero h1{font-size:clamp(34px,4.4vw,54px);line-height:1.05;font-weight:600;margin:0 0 18px;}
+  .hero h1 em{font-style:italic;color:var(--amber-deep);font-weight:500;}
+  .hero p{font-size:16px;line-height:1.6;color:var(--ink-soft);max-width:480px;margin:0 0 26px;}
+  .hero-note{
+    display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:var(--teal-deep);
+    background:rgba(58,107,110,0.09);border:1px solid rgba(58,107,110,0.25);
+    padding:8px 14px;border-radius:100px;
+  }
+  .hero-visual{display:flex;align-items:center;justify-content:center;}
+  .hero-visual svg{width:100%;max-width:360px;}
+
+  /* ---------- Catalog grid ---------- */
+  .section-head{padding:0 5vw;display:flex;justify-content:space-between;align-items:baseline;margin-bottom:22px;}
+  .section-head h2{font-size:26px;font-weight:600;margin:0;}
+  .section-head span{font-size:13px;color:var(--ink-soft);}
+  .grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+    gap:20px;padding:0 5vw 70px;
+  }
+  .card{
+    background:var(--paper-soft);border:1px solid var(--line);border-radius:4px;
+    overflow:hidden;transition:transform .18s ease, box-shadow .18s ease;cursor:pointer;
+    display:flex;flex-direction:column;
+  }
+  .card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(23,24,28,0.08);}
+  .card-img{aspect-ratio:4/3;background:var(--white);display:flex;align-items:center;justify-content:center;overflow:hidden;border-bottom:1px solid var(--line);}
+  .card-img img{width:100%;height:100%;object-fit:cover;}
+  .card-img .placeholder{width:70%;color:var(--line);}
+  .card-body{padding:16px 16px 18px;display:flex;flex-direction:column;gap:8px;flex:1;}
+  .card-body h3{font-size:17px;font-weight:600;margin:0;}
+  .card-price{font-family:'IBM Plex Mono',monospace;font-size:14px;color:var(--amber-deep);}
+  .swatch-row{display:flex;gap:6px;margin-top:auto;}
+  .swatch{width:16px;height:16px;border-radius:50%;border:1px solid rgba(0,0,0,0.15);}
+  .empty-state{padding:60px 5vw;text-align:center;color:var(--ink-soft);}
+  .empty-state h3{font-family:'Fraunces',serif;font-size:22px;color:var(--ink);margin-bottom:8px;}
+
+  /* ---------- Footer ---------- */
+  footer{padding:26px 5vw 40px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:var(--ink-soft);}
+  footer button.linklike{background:none;border:none;color:var(--ink-soft);font-size:12px;text-decoration:underline;padding:0;}
+
+  /* ---------- Modal ---------- */
+  .overlay{
+    position:fixed;inset:0;background:rgba(23,24,28,0.55);display:none;
+    align-items:flex-start;justify-content:center;padding:5vh 16px;z-index:100;overflow-y:auto;
+  }
+  .overlay.open{display:flex;}
+  .modal{
+    background:var(--paper-soft);border-radius:6px;max-width:640px;width:100%;
+    margin:auto;box-shadow:0 30px 60px rgba(0,0,0,0.3);position:relative;
+  }
+  .modal-close{position:absolute;top:14px;right:14px;background:none;border:none;font-size:20px;color:var(--ink-soft);width:32px;height:32px;border-radius:50%;}
+  .modal-close:hover{background:var(--line);}
+  .modal-inner{padding:34px 34px 30px;}
+  .modal-img{width:100%;aspect-ratio:16/10;background:var(--white);border:1px solid var(--line);border-radius:4px;overflow:hidden;display:flex;align-items:center;justify-content:center;margin-bottom:20px;}
+  .modal-img img{width:100%;height:100%;object-fit:cover;}
+  .modal h2{font-size:26px;margin:0 0 6px;}
+  .modal-price{font-family:'IBM Plex Mono',monospace;font-size:16px;color:var(--amber-deep);margin-bottom:14px;}
+  .modal-desc{font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin-bottom:22px;}
+  .label{font-size:11.5px;text-transform:uppercase;letter-spacing:1.2px;color:var(--ink-soft);margin-bottom:10px;display:block;}
+  .color-picker{display:flex;gap:14px;align-items:center;margin-bottom:24px;flex-wrap:wrap;}
+  .color-opt{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;border:none;background:none;padding:0;}
+  .color-dot{width:30px;height:30px;border-radius:50%;border:2px solid transparent;box-shadow:inset 0 0 0 1px rgba(0,0,0,0.15);}
+  .color-opt.active .color-dot{border-color:var(--ink);}
+  .color-opt span{font-size:11px;color:var(--ink-soft);}
+  .price-disclaimer{
+    font-size:12.5px;color:var(--teal-deep);background:rgba(58,107,110,0.09);
+    border:1px solid rgba(58,107,110,0.22);border-radius:4px;padding:12px 14px;margin-bottom:24px;line-height:1.5;
+  }
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    padding:14px 22px;border-radius:4px;border:none;font-weight:600;font-size:14.5px;
+    width:100%;transition:opacity .15s;
+  }
+  .btn:hover{opacity:0.9;}
+  .btn-primary{background:var(--ink);color:var(--paper);}
+  .btn-teal{background:var(--teal);color:#fff;}
+  .btn-outline{background:none;border:1px solid var(--line);color:var(--ink);}
+  .btn-danger{background:var(--danger);color:#fff;}
+
+  /* ---------- Forms ---------- */
+  .field{margin-bottom:16px;}
+  .field label{display:block;font-size:12.5px;color:var(--ink-soft);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.8px;}
+  .field input[type=text], .field input[type=tel], .field textarea, .field select{
+    width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:4px;
+    background:var(--white);font-family:'Inter',sans-serif;font-size:14.5px;color:var(--ink);
+  }
+  .field textarea{resize:vertical;min-height:60px;}
+  .radio-row{display:flex;gap:10px;}
+  .radio-card{
+    flex:1;border:1px solid var(--line);border-radius:4px;padding:12px 14px;cursor:pointer;
+    display:flex;align-items:center;gap:10px;font-size:14px;background:var(--white);
+  }
+  .radio-card.active{border-color:var(--teal);background:rgba(58,107,110,0.07);}
+  .file-drop{
+    border:1.5px dashed var(--line);border-radius:4px;padding:18px;text-align:center;
+    font-size:13px;color:var(--ink-soft);cursor:pointer;background:var(--white);
+  }
+  .file-drop.has-file{border-color:var(--teal);color:var(--teal-deep);}
+  .file-preview{margin-top:10px;max-height:140px;border-radius:4px;overflow:hidden;border:1px solid var(--line);}
+
+  /* ---------- Admin ---------- */
+  .admin-wrap{padding:40px 5vw 80px;max-width:900px;margin:0 auto;}
+  .admin-tabs{display:flex;gap:6px;margin-bottom:30px;border-bottom:1px solid var(--line);}
+  .admin-tab{background:none;border:none;padding:10px 16px;font-size:14px;color:var(--ink-soft);border-bottom:2px solid transparent;margin-bottom:-1px;}
+  .admin-tab.active{color:var(--ink);border-color:var(--amber-deep);font-weight:600;}
+  .panel{background:var(--paper-soft);border:1px solid var(--line);border-radius:6px;padding:26px;margin-bottom:20px;}
+  .panel h3{margin-top:0;font-size:18px;}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .prod-list-item{display:flex;gap:14px;align-items:center;border:1px solid var(--line);border-radius:4px;padding:12px;margin-bottom:10px;background:var(--white);}
+  .prod-list-item img{width:56px;height:56px;object-fit:cover;border-radius:4px;background:var(--paper);}
+  .prod-list-item .info{flex:1;}
+  .prod-list-item .info h4{margin:0 0 3px;font-size:14.5px;}
+  .prod-list-item .info span{font-size:12.5px;color:var(--ink-soft);}
+  .icon-btn{background:none;border:1px solid var(--line);border-radius:4px;padding:6px 10px;font-size:12px;color:var(--ink-soft);}
+  .icon-btn:hover{color:var(--ink);border-color:var(--ink-soft);}
+  .color-chip-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
+  .color-chip{display:flex;align-items:center;gap:6px;background:var(--white);border:1px solid var(--line);border-radius:100px;padding:4px 10px 4px 4px;font-size:12.5px;}
+  .color-chip .dot{width:16px;height:16px;border-radius:50%;}
+  .color-chip button{background:none;border:none;color:var(--ink-soft);font-size:13px;}
+  .order-card{border:1px solid var(--line);border-radius:4px;background:var(--white);margin-bottom:12px;overflow:hidden;}
+  .order-head{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;cursor:pointer;}
+  .order-head .l h4{margin:0 0 3px;font-size:14.5px;}
+  .order-head .l span{font-size:12px;color:var(--ink-soft);}
+  .status-badge{font-size:11px;padding:4px 10px;border-radius:100px;text-transform:uppercase;letter-spacing:0.5px;font-weight:600;}
+  .status-pendiente{background:rgba(184,121,58,0.15);color:var(--amber-deep);}
+  .status-contactado{background:rgba(58,107,110,0.15);color:var(--teal-deep);}
+  .status-cerrado{background:rgba(23,24,28,0.1);color:var(--ink-soft);}
+  .order-body{padding:0 16px 18px;border-top:1px solid var(--line);display:none;}
+  .order-body.open{display:block;padding-top:14px;}
+  .order-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:13.5px;margin-bottom:14px;}
+  .order-grid div span{display:block;color:var(--ink-soft);font-size:11px;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:2px;}
+  .lock-screen{max-width:340px;margin:100px auto;text-align:center;padding:0 20px;}
+  .lock-screen input{width:100%;text-align:center;letter-spacing:6px;font-size:20px;padding:14px;border:1px solid var(--line);border-radius:4px;margin:20px 0;font-family:'IBM Plex Mono',monospace;}
+  .toast{
+    position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+    background:var(--ink);color:var(--paper);padding:14px 22px;border-radius:6px;
+    font-size:13.5px;z-index:200;box-shadow:0 12px 30px rgba(0,0,0,0.25);display:none;max-width:90vw;text-align:center;
+  }
+  .toast.show{display:block;}
+  .loading-row{padding:80px 5vw;text-align:center;color:var(--ink-soft);font-size:14px;}
+
+  @media(max-width:820px){
+    .hero{grid-template-columns:1fr;padding-top:40px;}
+    .hero-visual{order:-1;max-width:220px;margin:0 auto;}
+    .row2{grid-template-columns:1fr;}
+    .order-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <svg class="brand-mark" viewBox="0 0 48 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="13" cy="16" r="11" stroke="#17181C" stroke-width="2.4"/>
+      <circle cx="35" cy="16" r="11" stroke="#17181C" stroke-width="2.4"/>
+      <path d="M24 14C24 14 24.5 11 27 11" stroke="#17181C" stroke-width="2.4" stroke-linecap="round"/>
+      <path d="M2 16C2 16 0 15 0 12" stroke="#17181C" stroke-width="2.2" stroke-linecap="round"/>
+      <path d="M46 16C46 16 48 15 48 12" stroke="#17181C" stroke-width="2.2" stroke-linecap="round"/>
+    </svg>
+    <div>
+      <div class="brand-name" id="brandName">Óptica</div>
+      <div class="brand-tag">Catálogo &amp; pedidos</div>
+    </div>
+  </div>
+  <div class="nav-links">
+    <button class="linklike" onclick="showView('catalog')">Catálogo</button>
+  </div>
+</div>
+
+<div id="app"></div>
+
+<footer>
+  <span>Los precios mostrados corresponden solo a la montura. El costo final del cristal se confirma por WhatsApp según tu receta.</span>
+  <button class="linklike" onclick="showView('admin')">Panel de la tienda</button>
+</footer>
+
+<!-- Product detail modal -->
+<div class="overlay" id="productOverlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeOverlay('productOverlay')">✕</button>
+    <div class="modal-inner" id="productModalContent"></div>
+  </div>
+</div>
+
+<!-- Order form modal -->
+<div class="overlay" id="orderOverlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeOverlay('orderOverlay')">✕</button>
+    <div class="modal-inner" id="orderModalContent"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ======================= STATE ======================= */
+let CONFIG = { storeName:'Óptica', whatsapp:'', pickupAddress:'', deliveryFee:'', adminPin:'1234' };
+let PRODUCTS = [];
+let ORDERS = [];
+let currentView = 'catalog';
+let currentProduct = null;
+let currentColorIndex = 0;
+let adminUnlocked = false;
+let adminTab = 'productos';
+let editingProductId = null;
+let orderFile = null; // {name, dataUrl}
+let orderDeliveryMode = 'retiro';
+
+/* ======================= STORAGE HELPERS ======================= */
+async function loadAll(){
+  try{
+    const c = await window.storage.get('config', true);
+    if(c && c.value) CONFIG = {...CONFIG, ...JSON.parse(c.value)};
+  }catch(e){}
+  try{
+    const p = await window.storage.get('products', true);
+    if(p && p.value) PRODUCTS = JSON.parse(p.value);
+  }catch(e){}
+  try{
+    const o = await window.storage.get('orders', true);
+    if(o && o.value) ORDERS = JSON.parse(o.value);
+  }catch(e){}
+}
+async function saveConfig(){
+  await window.storage.set('config', JSON.stringify(CONFIG), true);
+}
+async function saveProducts(){
+  await window.storage.set('products', JSON.stringify(PRODUCTS), true);
+}
+async function saveOrders(){
+  await window.storage.set('orders', JSON.stringify(ORDERS), true);
+}
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3200);
+}
+function money(n){
+  const num = Number(n)||0;
+  return 'RD$' + num.toLocaleString('es-DO');
+}
+function esc(s){
+  return (s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function fileToDataUrl(file){
+  return new Promise((res,rej)=>{
+    const r = new FileReader();
+    r.onload = ()=>res(r.result);
+    r.onerror = rej;
+    r.readAsDataURL(file);
+  });
+}
+
+/* ======================= RENDER ROOT ======================= */
+function showView(v){
+  currentView = v;
+  render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function render(){
+  document.getElementById('brandName').textContent = CONFIG.storeName || 'Óptica';
+  const app = document.getElementById('app');
+  if(currentView==='catalog') app.innerHTML = renderCatalog();
+  else app.innerHTML = renderAdmin();
+}
+
+/* ======================= CATALOG VIEW ======================= */
+function renderCatalog(){
+  return `
+    <section class="hero">
+      <div>
+        <div class="hero-note">◎ &nbsp;Elige la montura, prueba el color, nosotros calculamos tu lente</div>
+        <h1 style="margin-top:18px;">Encuentra tu <em>próxima</em> montura</h1>
+        <p>Explora el catálogo, selecciona el color que prefieras y envíanos tu receta. Confirmamos el precio final contigo por WhatsApp antes de fabricar tus lentes.</p>
+      </div>
+      <div class="hero-visual">
+        <svg viewBox="0 0 200 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="55" cy="50" r="42" stroke="#B8793A" stroke-width="5" fill="rgba(184,121,58,0.08)"/>
+          <circle cx="145" cy="50" r="42" stroke="#3A6B6E" stroke-width="5" fill="rgba(58,107,110,0.08)"/>
+          <path d="M97 46C97 46 100 36 108 36" stroke="#17181C" stroke-width="5" stroke-linecap="round"/>
+          <path d="M13 50C13 50 4 48 4 38" stroke="#17181C" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M187 50C187 50 196 48 196 38" stroke="#17181C" stroke-width="4.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </section>
+    <div class="section-head">
+      <h2>Catálogo de monturas</h2>
+      <span>${PRODUCTS.length} ${PRODUCTS.length===1?'modelo':'modelos'} disponibles</span>
+    </div>
+    ${PRODUCTS.length===0 ? `
+      <div class="empty-state">
+        <h3>Aún no hay monturas cargadas</h3>
+        <p>Entra al <a href="#" onclick="showView('admin');return false;" style="color:var(--teal-deep);text-decoration:underline;">panel de la tienda</a> para subir el primer modelo.</p>
+      </div>
+    ` : `
+      <div class="grid">
+        ${PRODUCTS.map(p=>`
+          <div class="card" onclick="openProduct('${p.id}')">
+            <div class="card-img">
+              ${p.image ? `<img src="${p.image}" alt="${esc(p.name)}">` : `<div class="placeholder"><svg viewBox="0 0 48 32" fill="none"><circle cx="13" cy="16" r="11" stroke="currentColor" stroke-width="2.4"/><circle cx="35" cy="16" r="11" stroke="currentColor" stroke-width="2.4"/><path d="M24 14C24 14 24.5 11 27 11" stroke="currentColor" stroke-width="2.4"/></svg></div>`}
+            </div>
+            <div class="card-body">
+              <h3>${esc(p.name)}</h3>
+              <div class="card-price mono">Desde ${money(p.price)}</div>
+              ${p.colors && p.colors.length ? `<div class="swatch-row">${p.colors.map(c=>`<div class="swatch" style="background:${c.hex}" title="${esc(c.name)}"></div>`).join('')}</div>` : ''}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    `}
+  `;
+}
+
+/* ======================= PRODUCT MODAL ======================= */
+function openProduct(id){
+  currentProduct = PRODUCTS.find(p=>p.id===id);
+  if(!currentProduct) return;
+  currentColorIndex = 0;
+  renderProductModal();
+  document.getElementById('productOverlay').classList.add('open');
+}
+function renderProductModal(){
+  const p = currentProduct;
+  const colors = p.colors || [];
+  const activeColor = colors[currentColorIndex];
+  document.getElementById('productModalContent').innerHTML = `
+    <div class="modal-img">
+      ${p.image ? `<img src="${p.image}" alt="${esc(p.name)}">` : ''}
+    </div>
+    <h2>${esc(p.name)}</h2>
+    <div class="modal-price mono">${money(p.price)} &nbsp;·&nbsp; solo montura</div>
+    ${p.description ? `<div class="modal-desc">${esc(p.description)}</div>` : ''}
+    ${colors.length ? `
+      <span class="label">Color (${colors.length} opciones)</span>
+      <div class="color-picker">
+        ${colors.map((c,i)=>`
+          <button class="color-opt ${i===currentColorIndex?'active':''}" onclick="selectColor(${i})">
+            <span class="color-dot" style="background:${c.hex}"></span>
+            <span>${esc(c.name)}</span>
+          </button>
+        `).join('')}
+        <svg width="52" height="30" viewBox="0 0 52 30" fill="none" style="margin-left:6px;">
+          <circle cx="14" cy="15" r="12" stroke="${activeColor?activeColor.hex:'#17181C'}" stroke-width="3.4"/>
+          <circle cx="38" cy="15" r="12" stroke="${activeColor?activeColor.hex:'#17181C'}" stroke-width="3.4"/>
+          <path d="M26 13C26 13 26.5 10 29 10" stroke="#17181C" stroke-width="2.6" stroke-linecap="round"/>
+        </svg>
+      </div>
+    ` : ''}
+    <div class="price-disclaimer">El precio de arriba es únicamente el de la montura (case). El costo del cristal se calcula según tu receta — te lo confirmamos por WhatsApp antes de producir tus lentes.</div>
+    <button class="btn btn-primary" onclick="openOrderForm()">Pedir esta montura</button>
+  `;
+}
+function selectColor(i){ currentColorIndex = i; renderProductModal(); }
+
+/* ======================= ORDER MODAL ======================= */
+function openOrderForm(){
+  orderFile = null;
+  orderDeliveryMode = 'retiro';
+  closeOverlay('productOverlay');
+  renderOrderModal();
+  document.getElementById('orderOverlay').classList.add('open');
+}
+function renderOrderModal(){
+  const p = currentProduct;
+  const color = (p.colors||[])[currentColorIndex];
+  const fee = CONFIG.deliveryFee ? money(CONFIG.deliveryFee) : 'a confirmar';
+  document.getElementById('orderModalContent').innerHTML = `
+    <h2 style="font-size:22px;">Completa tu pedido</h2>
+    <p style="font-size:13.5px;color:var(--ink-soft);margin-bottom:22px;">
+      ${esc(p.name)} ${color ? '· color ' + esc(color.name) : ''} · ${money(p.price)}
+    </p>
+    <div class="field">
+      <label>Nombre completo</label>
+      <input type="text" id="fNombre" placeholder="Ej. Ana María Pérez">
+    </div>
+    <div class="field">
+      <label>Teléfono</label>
+      <input type="tel" id="fTelefono" placeholder="Ej. 809 555 1234">
+    </div>
+    <div class="field">
+      <label>Entrega</label>
+      <div class="radio-row">
+        <div class="radio-card ${orderDeliveryMode==='retiro'?'active':''}" onclick="setDeliveryMode('retiro')">🏬 Recoger en tienda</div>
+        <div class="radio-card ${orderDeliveryMode==='envio'?'active':''}" onclick="setDeliveryMode('envio')">🚚 Envío (+${fee})</div>
+      </div>
+    </div>
+    <div class="field" id="direccionField" style="${orderDeliveryMode==='envio'?'':'display:none;'}">
+      <label>Dirección de envío</label>
+      <textarea id="fDireccion" placeholder="Calle, número, sector, referencia..."></textarea>
+    </div>
+    <div class="field">
+      <label>Receta de tus lentes (opcional, recomendado)</label>
+      <div class="file-drop" id="fileDrop" onclick="document.getElementById('fReceta').click()">
+        📎 Toca para subir una foto de tu receta
+      </div>
+      <input type="file" id="fReceta" accept="image/*" style="display:none;" onchange="handleFile(event)">
+      <div id="filePreviewWrap"></div>
+    </div>
+    <div class="field">
+      <label>Notas (opcional)</label>
+      <textarea id="fNotas" placeholder="Graduación, preferencias, horario para contactarte..."></textarea>
+    </div>
+    <button class="btn btn-teal" onclick="submitOrder()">Enviar pedido por WhatsApp</button>
+  `;
+}
+function setDeliveryMode(mode){
+  orderDeliveryMode = mode;
+  renderOrderModal();
+}
+async function handleFile(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const dataUrl = await fileToDataUrl(file);
+  orderFile = {name:file.name, dataUrl};
+  document.getElementById('fileDrop').classList.add('has-file');
+  document.getElementById('fileDrop').textContent = '✓ ' + file.name;
+  document.getElementById('filePreviewWrap').innerHTML = `<div class="file-preview"><img src="${dataUrl}"></div>`;
+}
+
+async function submitOrder(){
+  const nombre = document.getElementById('fNombre').value.trim();
+  const telefono = document.getElementById('fTelefono').value.trim();
+  const direccion = orderDeliveryMode==='envio' ? document.getElementById('fDireccion').value.trim() : '';
+  const notas = document.getElementById('fNotas').value.trim();
+
+  if(!nombre || !telefono){
+    showToast('Por favor completa nombre y teléfono.');
+    return;
+  }
+  if(orderDeliveryMode==='envio' && !direccion){
+    showToast('Por favor ingresa la dirección de envío.');
+    return;
+  }
+  if(!CONFIG.whatsapp){
+    showToast('La tienda aún no configuró su número de WhatsApp. Avísale al administrador.');
+  }
+
+  const p = currentProduct;
+  const color = (p.colors||[])[currentColorIndex];
+  const order = {
+    id: 'o_' + Date.now(),
+    fecha: new Date().toISOString(),
+    producto: p.name,
+    productoId: p.id,
+    precioMontura: p.price,
+    color: color ? color.name : '',
+    nombre, telefono, direccion, notas,
+    entrega: orderDeliveryMode,
+    receta: orderFile ? orderFile.dataUrl : null,
+    recetaNombre: orderFile ? orderFile.name : null,
+    estado: 'pendiente'
+  };
+  ORDERS.unshift(order);
+  await saveOrders();
+
+  // Build WhatsApp message
+  let msg = `🕶️ *Nuevo pedido - ${CONFIG.storeName||'Óptica'}*\n\n`;
+  msg += `*Montura:* ${p.name}\n`;
+  if(color) msg += `*Color:* ${color.name}\n`;
+  msg += `*Precio montura:* ${money(p.price)} (sin cristal)\n\n`;
+  msg += `*Cliente:* ${nombre}\n`;
+  msg += `*Teléfono:* ${telefono}\n`;
+  msg += `*Entrega:* ${orderDeliveryMode==='envio' ? 'Envío a domicilio' : 'Retiro en tienda'}\n`;
+  if(direccion) msg += `*Dirección:* ${direccion}\n`;
+  if(notas) msg += `*Notas:* ${notas}\n`;
+  msg += orderFile ? `\n📎 Adjunto la foto de mi receta en este chat.` : `\n(Aún no tengo foto de mi receta a mano)`;
+  msg += `\n\n_Pedido registrado también en el panel de la tienda._`;
+
+  const waNumber = (CONFIG.whatsapp||'').replace(/[^0-9]/g,'');
+  const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`;
+
+  closeOverlay('orderOverlay');
+  if(waNumber){
+    window.open(waUrl, '_blank');
+    showToast(orderFile ? 'Pedido guardado. Se abrió WhatsApp — no olvides adjuntar tu receta en el chat.' : 'Pedido guardado. Se abrió WhatsApp para enviarlo.');
+  }else{
+    showToast('Pedido guardado en el panel de la tienda.');
+  }
+}
+
+/* ======================= OVERLAYS ======================= */
+function closeOverlay(id){
+  document.getElementById(id).classList.remove('open');
+}
+
+/* ======================= ADMIN ======================= */
+function renderAdmin(){
+  if(!adminUnlocked){
+    return `
+      <div class="lock-screen">
+        <h2 class="display">Panel de la tienda</h2>
+        <p style="color:var(--ink-soft);font-size:14px;">Ingresa el PIN para administrar el catálogo y ver los pedidos.</p>
+        <input type="text" id="pinInput" maxlength="8" placeholder="••••">
+        <button class="btn btn-primary" onclick="tryUnlock()">Entrar</button>
+      </div>
+    `;
+  }
+  return `
+    <div class="admin-wrap">
+      <div class="admin-tabs">
+        <button class="admin-tab ${adminTab==='productos'?'active':''}" onclick="setAdminTab('productos')">Productos</button>
+        <button class="admin-tab ${adminTab==='pedidos'?'active':''}" onclick="setAdminTab('pedidos')">Pedidos ${ORDERS.length?`(${ORDERS.filter(o=>o.estado==='pendiente').length} nuevos)`:''}</button>
+        <button class="admin-tab ${adminTab==='config'?'active':''}" onclick="setAdminTab('config')">Configuración</button>
+      </div>
+      ${adminTab==='productos' ? renderAdminProductos() : ''}
+      ${adminTab==='pedidos' ? renderAdminPedidos() : ''}
+      ${adminTab==='config' ? renderAdminConfig() : ''}
+    </div>
+  `;
+}
+function tryUnlock(){
+  const val = document.getElementById('pinInput').value;
+  if(val === (CONFIG.adminPin||'1234')){
+    adminUnlocked = true;
+    render();
+  }else{
+    showToast('PIN incorrecto.');
+  }
+}
+function setAdminTab(t){
+  adminTab = t;
+  editingProductId = null;
+  render();
+}
+
+/* ---- Admin: Productos ---- */
+let newProdColors = [];
+let newProdImage = null;
+
+function renderAdminProductos(){
+  const editing = editingProductId ? PRODUCTS.find(p=>p.id===editingProductId) : null;
+  return `
+    <div class="panel">
+      <h3>${editing ? 'Editar montura' : 'Agregar nueva montura'}</h3>
+      <div class="row2">
+        <div class="field">
+          <label>Nombre del modelo</label>
+          <input type="text" id="pName" value="${editing?esc(editing.name):''}" placeholder="Ej. Montura Aviador Clásica">
+        </div>
+        <div class="field">
+          <label>Precio de la montura (RD$)</label>
+          <input type="text" id="pPrice" value="${editing?editing.price:''}" placeholder="Ej. 2500">
+        </div>
+      </div>
+      <div class="field">
+        <label>Descripción (opcional)</label>
+        <textarea id="pDesc" placeholder="Material, estilo, para quién es ideal...">${editing?esc(editing.description||''):''}</textarea>
+      </div>
+      <div class="field">
+        <label>Foto de la montura</label>
+        <div class="file-drop ${ (newProdImage || (editing && editing.image)) ?'has-file':''}" id="prodFileDrop" onclick="document.getElementById('pImage').click()">
+          ${ (newProdImage || (editing && editing.image)) ? '✓ Imagen cargada (toca para cambiar)' : '📎 Toca para subir una foto'}
+        </div>
+        <input type="file" id="pImage" accept="image/*" style="display:none;" onchange="handleProdImage(event)">
+        <div id="prodImgPreview">${(newProdImage || (editing && editing.image)) ? `<div class="file-preview"><img src="${newProdImage || editing.image}"></div>` : ''}</div>
+      </div>
+      <div class="field">
+        <label>Colores disponibles</label>
+        <div class="color-chip-row" id="colorChipRow">
+          ${(newProdColors.length?newProdColors:(editing?editing.colors||[]:[])).map((c,i)=>`
+            <div class="color-chip"><span class="dot" style="background:${c.hex}"></span>${esc(c.name)}<button onclick="removeColor(${i})">✕</button></div>
+          `).join('')}
+        </div>
+        <div style="display:flex;gap:8px;">
+          <input type="text" id="colorName" placeholder="Nombre (ej. Negro mate)" style="flex:1;padding:9px 11px;border:1px solid var(--line);border-radius:4px;font-size:13.5px;">
+          <input type="color" id="colorHex" value="#333333" style="width:44px;height:38px;border:1px solid var(--line);border-radius:4px;padding:2px;">
+          <button class="icon-btn" onclick="addColor()">+ agregar</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:10px;">
+        <button class="btn btn-primary" style="width:auto;flex:1;" onclick="saveProduct()">${editing?'Guardar cambios':'Agregar montura'}</button>
+        ${editing ? `<button class="btn btn-outline" style="width:auto;" onclick="cancelEditProduct()">Cancelar</button>` : ''}
+      </div>
+    </div>
+
+    <h3 style="margin-bottom:14px;">Monturas en catálogo (${PRODUCTS.length})</h3>
+    ${PRODUCTS.length===0 ? `<p style="color:var(--ink-soft);font-size:14px;">Ninguna montura cargada todavía.</p>` : PRODUCTS.map(p=>`
+      <div class="prod-list-item">
+        <img src="${p.image||''}" alt="">
+        <div class="info">
+          <h4>${esc(p.name)}</h4>
+          <span>${money(p.price)} · ${(p.colors||[]).length} colores</span>
+        </div>
+        <button class="icon-btn" onclick="editProduct('${p.id}')">Editar</button>
+        <button class="icon-btn" onclick="deleteProduct('${p.id}')">Eliminar</button>
+      </div>
+    `).join('')}
+  `;
+}
+async function handleProdImage(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  newProdImage = await fileToDataUrl(file);
+  renderAdmin_refreshProductosOnly();
+}
+function renderAdmin_refreshProductosOnly(){
+  document.querySelector('.admin-wrap').innerHTML = `
+    <div class="admin-tabs">
+      <button class="admin-tab active" onclick="setAdminTab('productos')">Productos</button>
+      <button class="admin-tab" onclick="setAdminTab('pedidos')">Pedidos</button>
+      <button class="admin-tab" onclick="setAdminTab('config')">Configuración</button>
+    </div>
+    ${renderAdminProductos()}
+  `;
+}
+function addColor(){
+  const name = document.getElementById('colorName').value.trim();
+  const hex = document.getElementById('colorHex').value;
+  if(!name){ showToast('Ponle un nombre al color.'); return; }
+  if(editingProductId && newProdColors.length===0){
+    const editing = PRODUCTS.find(p=>p.id===editingProductId);
+    newProdColors = editing ? [...(editing.colors||[])] : [];
+  }
+  newProdColors.push({name, hex});
+  renderAdmin_refreshProductosOnly();
+}
+function removeColor(i){
+  newProdColors.splice(i,1);
+  renderAdmin_refreshProductosOnly();
+}
+function editProduct(id){
+  editingProductId = id;
+  const p = PRODUCTS.find(x=>x.id===id);
+  newProdColors = p.colors ? [...p.colors] : [];
+  newProdImage = null;
+  render();
+}
+function cancelEditProduct(){
+  editingProductId = null;
+  newProdColors = [];
+  newProdImage = null;
+  render();
+}
+async function saveProduct(){
+  const name = document.getElementById('pName').value.trim();
+  const price = document.getElementById('pPrice').value.trim().replace(/[^0-9.]/g,'');
+  const description = document.getElementById('pDesc').value.trim();
+  if(!name || !price){ showToast('Completa nombre y precio.'); return; }
+
+  if(editingProductId){
+    const p = PRODUCTS.find(x=>x.id===editingProductId);
+    p.name = name; p.price = price; p.description = description;
+    p.colors = newProdColors.length ? newProdColors : p.colors;
+    if(newProdImage) p.image = newProdImage;
+  }else{
+    PRODUCTS.push({
+      id: 'p_' + Date.now(),
+      name, price, description,
+      image: newProdImage || null,
+      colors: newProdColors
+    });
+  }
+  await saveProducts();
+  editingProductId = null;
+  newProdColors = [];
+  newProdImage = null;
+  showToast('Montura guardada.');
+  render();
+}
+async function deleteProduct(id){
+  if(!confirm('¿Eliminar esta montura del catálogo?')) return;
+  PRODUCTS = PRODUCTS.filter(p=>p.id!==id);
+  await saveProducts();
+  render();
+}
+
+/* ---- Admin: Pedidos ---- */
+let openOrderId = null;
+function renderAdminPedidos(){
+  if(ORDERS.length===0) return `<div class="panel"><p style="color:var(--ink-soft);">Todavía no hay pedidos.</p></div>`;
+  return ORDERS.map(o=>`
+    <div class="order-card">
+      <div class="order-head" onclick="toggleOrder('${o.id}')">
+        <div class="l">
+          <h4>${esc(o.nombre)} · ${esc(o.producto)}</h4>
+          <span>${new Date(o.fecha).toLocaleString('es-DO')}</span>
+        </div>
+        <span class="status-badge status-${o.estado}">${o.estado}</span>
+      </div>
+      <div class="order-body ${openOrderId===o.id?'open':''}" id="body_${o.id}">
+        <div class="order-grid">
+          <div><span>Teléfono</span>${esc(o.telefono)}</div>
+          <div><span>Color</span>${esc(o.color)||'—'}</div>
+          <div><span>Entrega</span>${o.entrega==='envio'?'Envío a domicilio':'Retiro en tienda'}</div>
+          <div><span>Precio montura</span>${money(o.precioMontura)}</div>
+          ${o.direccion ? `<div style="grid-column:1/-1;"><span>Dirección</span>${esc(o.direccion)}</div>` : ''}
+          ${o.notas ? `<div style="grid-column:1/-1;"><span>Notas</span>${esc(o.notas)}</div>` : ''}
+        </div>
+        ${o.receta ? `<span class="label">Receta adjunta</span><div class="file-preview" style="max-height:220px;"><img src="${o.receta}"></div>` : `<p style="font-size:12.5px;color:var(--ink-soft);">El cliente no adjuntó receta desde el sitio (puede haberla enviado directo por WhatsApp).</p>`}
+        <div style="display:flex;gap:8px;margin-top:14px;">
+          <select onchange="updateOrderStatus('${o.id}', this.value)" style="padding:8px 10px;border:1px solid var(--line);border-radius:4px;font-size:13px;">
+            <option value="pendiente" ${o.estado==='pendiente'?'selected':''}>Pendiente</option>
+            <option value="contactado" ${o.estado==='contactado'?'selected':''}>Contactado</option>
+            <option value="cerrado" ${o.estado==='cerrado'?'selected':''}>Cerrado</option>
+          </select>
+          <button class="icon-btn" onclick="deleteOrder('${o.id}')">Eliminar pedido</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+function toggleOrder(id){
+  openOrderId = openOrderId===id ? null : id;
+  render();
+}
+async function updateOrderStatus(id, status){
+  const o = ORDERS.find(x=>x.id===id);
+  if(o) o.estado = status;
+  await saveOrders();
+}
+async function deleteOrder(id){
+  if(!confirm('¿Eliminar este pedido?')) return;
+  ORDERS = ORDERS.filter(o=>o.id!==id);
+  await saveOrders();
+  render();
+}
+
+/* ---- Admin: Configuración ---- */
+function renderAdminConfig(){
+  return `
+    <div class="panel">
+      <h3>Datos de la tienda</h3>
+      <div class="field">
+        <label>Nombre de la tienda</label>
+        <input type="text" id="cName" value="${esc(CONFIG.storeName)}">
+      </div>
+      <div class="field">
+        <label>Número de WhatsApp (con código de país, solo números — ej. 18095551234)</label>
+        <input type="text" id="cWhatsapp" value="${esc(CONFIG.whatsapp)}">
+      </div>
+      <div class="field">
+        <label>Dirección para retiro en tienda</label>
+        <input type="text" id="cAddress" value="${esc(CONFIG.pickupAddress)}">
+      </div>
+      <div class="field">
+        <label>Costo de envío estándar (RD$)</label>
+        <input type="text" id="cFee" value="${esc(CONFIG.deliveryFee)}">
+      </div>
+      <div class="field">
+        <label>PIN de acceso al panel</label>
+        <input type="text" id="cPin" value="${esc(CONFIG.adminPin)}">
+      </div>
+      <button class="btn btn-primary" style="width:auto;" onclick="saveConfigForm()">Guardar configuración</button>
+    </div>
+  `;
+}
+async function saveConfigForm(){
+  CONFIG.storeName = document.getElementById('cName').value.trim() || 'Óptica';
+  CONFIG.whatsapp = document.getElementById('cWhatsapp').value.trim();
+  CONFIG.pickupAddress = document.getElementById('cAddress').value.trim();
+  CONFIG.deliveryFee = document.getElementById('cFee').value.trim();
+  CONFIG.adminPin = document.getElementById('cPin').value.trim() || '1234';
+  await saveConfig();
+  showToast('Configuración guardada.');
+  render();
+}
+
+/* ======================= INIT ======================= */
+async function init(){
+  document.getElementById('app').innerHTML = `<div class="loading-row">Cargando catálogo...</div>`;
+  await loadAll();
+  render();
+}
+init();
+</script>
+</body>
+</html>
