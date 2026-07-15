@@ -1,0 +1,10 @@
+import yfinance as yf
+
+# Especifica el ticker de la acción que deseas analizar (por ejemplo, Apple)
+ticker = "AAPL"
+
+# Descarga los datos históricos (ajusta las fechas según tus necesidades)
+data = yf.download(ticker, start="2020-01-01", end="2024-10-13")
+
+# Mostrar las primeras filas del DataFrame
+print(data.head())
