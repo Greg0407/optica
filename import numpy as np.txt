@@ -1,4 +1,0 @@
-import numpy as np
-
-# Seleccionar los datos de cierre ajustado
-close_prices = data['Adj Close'].values
